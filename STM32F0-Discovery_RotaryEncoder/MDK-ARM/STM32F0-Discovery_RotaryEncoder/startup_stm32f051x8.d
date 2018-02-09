@@ -1,0 +1,1 @@
+stm32f0-discovery_rotaryencoder\startup_stm32f051x8.o: startup_stm32f051x8.s

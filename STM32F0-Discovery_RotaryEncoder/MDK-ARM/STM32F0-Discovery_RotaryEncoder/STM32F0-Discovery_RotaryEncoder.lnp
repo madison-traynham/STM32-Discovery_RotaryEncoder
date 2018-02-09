@@ -1,0 +1,24 @@
+--cpu Cortex-M0
+"stm32f0-discovery_rotaryencoder\stm32f0xx_it.o"
+"stm32f0-discovery_rotaryencoder\main.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_msp.o"
+"stm32f0-discovery_rotaryencoder\system_stm32f0xx.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_flash_ex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_i2c_ex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_pwr_ex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_tim_ex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_i2c.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_gpio.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_rcc_ex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_dma.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_pwr.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_flash.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_rcc.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_cortex.o"
+"stm32f0-discovery_rotaryencoder\stm32f0xx_hal_tim.o"
+"stm32f0-discovery_rotaryencoder\startup_stm32f051x8.o"
+--library_type=microlib --strict --scatter "STM32F0-Discovery_RotaryEncoder\STM32F0-Discovery_RotaryEncoder.sct"
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "STM32F0-Discovery_RotaryEncoder.map" -o STM32F0-Discovery_RotaryEncoder\STM32F0-Discovery_RotaryEncoder.axf
