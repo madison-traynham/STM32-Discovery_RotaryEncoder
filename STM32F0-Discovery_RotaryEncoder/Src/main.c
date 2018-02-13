@@ -49,8 +49,12 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 int blink_period = 250;
-int CW, CCW = 0;
-uint32_t rotationCount = 0;
+static int8_t states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
+uint8_t RotaryCurrentState = 0x00;
+uint8_t RotaryTransition = 0;
+int8_t RotaryPosition = 0;
+volatile int enc_cnt;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,7 +63,7 @@ static void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
-
+void rotary_encoder_update(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
@@ -105,15 +109,8 @@ int main(void)
   /* USER CODE BEGIN 3 */
 		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_8);
 		HAL_Delay(blink_period);
-			
-		if(CW)
-		{
-			rotationCount += CW;
-		}
-		else if(CCW)
-		{
-			rotationCount -=CCW;
-		}
+		
+
   /* USER CODE END 3 */
 	}
 
@@ -187,13 +184,13 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;//GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PinA_Pin */
   GPIO_InitStruct.Pin = PINA_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;//GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(PINA_GPIO_Port, &GPIO_InitStruct);
 
@@ -233,19 +230,43 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       blink_period = 1000;
     }
   }
+	//Channel B Interrupt
 	if(GPIO_Pin == GPIO_PIN_1)
 	{
-		CW = 1;
-		CCW = 0;
+
 	}
+	//Channel A Interrupt
 	if(GPIO_Pin == GPIO_PIN_2)
 	{
-		CCW = 1;
-		CW =0;
+		rotary_encoder_update();
 	}
-		
+}
+void rotary_encoder_update()
+{
+    // When falling edge interrupt triggered by pin A of rotary encoder,
+    // then read pin B of rotary encoder (1x resolution)
+    if ((GPIOA->IDR & GPIO_PIN_1))
+    {
+        enc_cnt++;
+    }
+    else
+    {
+        enc_cnt--;
+    }
+    // Set max and min value
+    if (enc_cnt > 80)
+    {
+        enc_cnt = 80;
+    }
+    if (enc_cnt < 0)
+    {
+        enc_cnt = 0;
+    }
 
 }
+
+
+
 /* USER CODE END 4 */
 
 /**
